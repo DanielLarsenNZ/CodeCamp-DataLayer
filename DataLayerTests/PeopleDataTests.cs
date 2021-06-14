@@ -1,3 +1,4 @@
+using DataLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5,7 +6,7 @@ using System.Threading.Tasks;
 namespace DataLayerTests
 {
     [TestClass]
-    [TestCategory()]
+    [TestCategory("Integration")]
     public class PeopleDataTests
     {
         [TestMethod]
