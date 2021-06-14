@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31313.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{3D1B5442-0599-4030-9F0D-C90B147E831A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayerTests", "DataLayerTests\DataLayerTests.csproj", "{37844D38-1805-491E-A880-09E25D368F96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D1B5442-0599-4030-9F0D-C90B147E831A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D1B5442-0599-4030-9F0D-C90B147E831A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D1B5442-0599-4030-9F0D-C90B147E831A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D1B5442-0599-4030-9F0D-C90B147E831A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37844D38-1805-491E-A880-09E25D368F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37844D38-1805-491E-A880-09E25D368F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37844D38-1805-491E-A880-09E25D368F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37844D38-1805-491E-A880-09E25D368F96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67F87F22-24FD-41C5-AB12-FBB95D07D444}
+	EndGlobalSection
+EndGlobal
