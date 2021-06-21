@@ -39,7 +39,7 @@ namespace DataLayer
             return response.Resource;
         }
 
-        public async void Remove()
+        public async void Remove(int id)
         {
             // TODO: implementation :)
         }
