@@ -20,5 +20,8 @@ namespace DataLayer
         public string Id { get; set; }
 
         public string  LastName { get; set; }
+
+        [JsonIgnore]
+        public string Etag { get; set; }
     }
 }

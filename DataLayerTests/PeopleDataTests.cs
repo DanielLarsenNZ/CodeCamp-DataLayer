@@ -31,27 +31,7 @@ namespace DataLayerTests
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task RemovePerson()
-        {
-            // Create a CosmosClient
-            var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
-
-            // Inject into PeopleData. IRL we would do this with IoC
-            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
-
-            // act
-            string id = "123"; // TODO: define this based on schema
-            data.Remove(id);
-            var people = await data.GetAll();
-
-            // assert
-            Assert.IsFalse(people.Any(p => p.Id == id)); // TODO: change property based on schema
-
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task PersonHasName()
+        public async Task AllPeopleHaveName()
         {
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
 
@@ -62,25 +42,33 @@ namespace DataLayerTests
             var people = await data.GetAll();
 
             // assert
-            Assert.IsFalse(people.Any(p => string.IsNullOrEmpty(p.FirstName))); // just check first person?
+            Assert.IsFalse(people.Any(p => string.IsNullOrEmpty(p.FirstName)));
         }
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task CreatePerson()
+        public async Task CreateAndRemovePerson()
         {
             // arrange
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
-            var person = new Person { FirstName = "Alice", Id = "A102", LastName = "Bob" };
+            var person = new Person { FirstName = "Alice", Id = "A104", LastName = "Bob" };
 
             // Inject into PeopleData. IRL we would do this with IoC
             var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
             
-            // 
+            // act
             var newPerson = await data.Create(person);
+            var people = await data.GetAll();
 
-            Assert.IsNotNull(newPerson);
-            // TODO: assert person is in database
+            // assert
+            Assert.IsTrue( people.Any(p => p.Id == newPerson.Id));
+
+            // act
+            data.Remove(newPerson.Id);
+            people = await data.GetAll();
+
+            // assert
+            Assert.IsFalse(people.Any(p => p.Id == newPerson.Id));
         }
     }
 }

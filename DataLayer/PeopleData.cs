@@ -41,13 +41,17 @@ namespace DataLayer
 
         public async void Remove(string id)
         {
-            // TODO: implementation :)
+            // TODO: exception handling
+            var response = await _container.DeleteItemAsync<Person>(id, new PartitionKey(id));
         }
 
         public async Task<Person> Create(Person person)
         {
-            var newPerson =  await _container.CreateItemAsync(person);
-            return newPerson.Resource;
+            var response =  await _container.CreateItemAsync(person);
+
+            Person newPerson = response.Resource;
+            newPerson.Etag = response.ETag;
+            return newPerson;
         }
     }
 }
