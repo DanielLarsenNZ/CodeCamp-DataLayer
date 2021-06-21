@@ -40,7 +40,7 @@ namespace DataLayerTests
             var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
 
             // act
-            int id = 123; // TODO: define this based on schema
+            string id = "123"; // TODO: define this based on schema
             data.Remove(id);
             var people = await data.GetAll();
 
@@ -62,7 +62,25 @@ namespace DataLayerTests
             var people = await data.GetAll();
 
             // assert
-            Assert.IsFalse(people.Any(p => string.IsNullOrEmpty(p.Name))); // just check first person?
+            Assert.IsFalse(people.Any(p => string.IsNullOrEmpty(p.FirstName))); // just check first person?
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task CreatePerson()
+        {
+            // arrange
+            var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
+            var person = new Person { FirstName = "Alice", Id = "A102", LastName = "Bob" };
+
+            // Inject into PeopleData. IRL we would do this with IoC
+            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+            
+            // 
+            var newPerson = await data.Create(person);
+
+            Assert.IsNotNull(newPerson);
+            // TODO: assert person is in database
         }
     }
 }

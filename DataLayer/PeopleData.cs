@@ -39,9 +39,15 @@ namespace DataLayer
             return response.Resource;
         }
 
-        public async void Remove(int id)
+        public async void Remove(string id)
         {
             // TODO: implementation :)
+        }
+
+        public async Task<Person> Create(Person person)
+        {
+            var newPerson =  await _container.CreateItemAsync(person);
+            return newPerson.Resource;
         }
     }
 }
