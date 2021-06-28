@@ -50,6 +50,7 @@ namespace DataLayerTests
         [TestCategory("Integration")]
         public async Task CreateAndRemovePerson()
         {
+            //setup
             // arrange
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
             var person = new Person { FirstName = "Alice", Id = "A104", LastName = "Bob", HoursWorked = 5.5, Phone = "+642123456" };
@@ -59,17 +60,25 @@ namespace DataLayerTests
             
             // act
             var newPerson = await data.Create(person);
-            var people = await data.GetAll();
+            try
+            {
+                var people = await data.GetAll();
 
-            // assert
-            Assert.IsTrue( people.Any(p => p.Id == newPerson.Id));
+                // assert
+                Assert.IsTrue(people.Any(p => p.Id == newPerson.Id));
+            }
+            finally
+            {
+                // teardown
 
-            // act
-            data.Remove(newPerson.Id);
-            people = await data.GetAll();
+                data.Remove(newPerson.Id);
+                //people = await data.GetAll();
 
-            // assert
-            Assert.IsFalse(people.Any(p => p.Id == newPerson.Id));
+                // assert
+                //Assert.IsFalse(people.Any(p => p.Id == newPerson.Id));
+            }
+
+
         }
     }
 }

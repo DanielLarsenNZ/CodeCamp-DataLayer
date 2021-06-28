@@ -50,7 +50,7 @@ namespace DataLayer
             var response =  await _container.CreateItemAsync(person);
 
             Person newPerson = response.Resource;
-            newPerson.Etag = response.ETag;
+            newPerson.ETag = response.ETag;
             return newPerson;
         }
     }

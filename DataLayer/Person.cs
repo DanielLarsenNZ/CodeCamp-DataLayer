@@ -21,8 +21,7 @@ namespace DataLayer
 
         public string  LastName { get; set; }
 
-        [JsonIgnore]
-        public string Etag { get; set; }
+        public string ETag { get; set; }
 
         public double HoursWorked { get; set; }
 
