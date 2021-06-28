@@ -23,5 +23,9 @@ namespace DataLayer
 
         [JsonIgnore]
         public string Etag { get; set; }
+
+        public double HoursWorked { get; set; }
+
+        public string Phone { get; set; } 
     }
 }

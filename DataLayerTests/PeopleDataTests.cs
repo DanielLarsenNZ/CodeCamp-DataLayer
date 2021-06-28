@@ -33,6 +33,7 @@ namespace DataLayerTests
         [TestCategory("Integration")]
         public async Task AllPeopleHaveName()
         {
+            // arrange
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
 
             // Inject into PeopleData. IRL we would do this with IoC
@@ -51,7 +52,7 @@ namespace DataLayerTests
         {
             // arrange
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
-            var person = new Person { FirstName = "Alice", Id = "A104", LastName = "Bob" };
+            var person = new Person { FirstName = "Alice", Id = "A104", LastName = "Bob", HoursWorked = 5.5, Phone = "+642123456" };
 
             // Inject into PeopleData. IRL we would do this with IoC
             var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
