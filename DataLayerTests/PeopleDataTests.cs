@@ -1,6 +1,7 @@
 using DataLayer;
 using Microsoft.Azure.Cosmos;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -48,7 +49,7 @@ namespace DataLayerTests
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task CreateAndRemovePerson()
+        public async Task CreatePerson()
         {
             //setup
             // arrange
@@ -70,15 +71,74 @@ namespace DataLayerTests
             finally
             {
                 // teardown
-
                 data.Remove(newPerson.Id);
-                //people = await data.GetAll();
-
-                // assert
-                //Assert.IsFalse(people.Any(p => p.Id == newPerson.Id));
             }
+        }
 
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task RemovePerson()
+        {
+            //setup
+            var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
+            var person = new Person { FirstName = "Alice", Id = "A105", LastName = "Bob", HoursWorked = 5.5, Phone = "+642123456" };
 
+            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+            var newPerson = await data.Create(person);
+
+            //act
+            data.Remove(newPerson.Id);
+            var people = await data.GetAll();
+
+            //assert
+            Assert.IsFalse(people.Any(p => p.Id == newPerson.Id)); // check other attributes?
+
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPerson()
+        {
+            //setup
+            var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
+            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+
+            // act
+            var person = await data.Get("A101");
+
+            Assert.IsTrue(person.Id == "A101");
+
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task CorrectUpdate()
+        {
+            // arrange
+            var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
+            var person = new Person { FirstName = "Alice", Id = "A104", LastName = "Bob", HoursWorked = 5.5, Phone = "+642123456" };
+
+            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+            var newPerson = await data.Create(person);
+
+            // act
+            newPerson.FirstName = "Alice2";
+            var updatePerson = await data.Update(newPerson);
+
+            // remove older version of item.
+            try
+            {
+                data.Remove(newPerson);
+            }
+            finally
+            {
+                // need to run assertion before clean up - refactor to use get method
+                var people = await data.GetAll();
+                Assert.IsTrue(people.Any(p => p.Id == newPerson.Id));
+
+                // teardown
+                data.Remove(updatePerson);
+            }
         }
     }
 }

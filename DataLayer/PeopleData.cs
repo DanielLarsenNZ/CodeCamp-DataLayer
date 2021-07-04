@@ -42,16 +42,49 @@ namespace DataLayer
         public async void Remove(string id)
         {
             // TODO: exception handling
+            // TODO: ETag validation before removal.
             var response = await _container.DeleteItemAsync<Person>(id, new PartitionKey(id));
+        }
+
+        public async void Remove(Person person)
+        {
+            var id = person.Id;
+            try
+            {
+                var response = await _container.DeleteItemAsync<Person>(id, new PartitionKey(id), new ItemRequestOptions { IfMatchEtag = person.ETag });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e); //query why this must be done out of test method to work
+            }
         }
 
         public async Task<Person> Create(Person person)
         {
             var response =  await _container.CreateItemAsync(person);
-
-            Person newPerson = response.Resource;
-            newPerson.ETag = response.ETag;
-            return newPerson;
+            return personWithETag(response);
         }
+
+        public async Task<Person> Get(string id)
+        {
+            var response = await _container.ReadItemAsync<Person>(id, new PartitionKey(id));
+            return personWithETag(response);
+        }
+
+        public async Task<Person> Update(Person person)
+        {
+            var response = await _container.ReplaceItemAsync(person, person.Id, new PartitionKey(person.Id), new ItemRequestOptions { IfMatchEtag = person.ETag });
+            return personWithETag(response);
+        }
+        /// <summary>
+        /// Method taking the response object and parsing it into a person object with the ETag property extracted.
+        /// </summary>
+        private Person personWithETag(ItemResponse<Person> response)
+        {
+            Person person = response.Resource;
+            person.ETag = response.ETag;
+            return person;
+        }
+
     }
 }
