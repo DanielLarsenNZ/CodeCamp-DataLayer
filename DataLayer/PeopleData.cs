@@ -1,5 +1,4 @@
 ﻿using Microsoft.Azure.Cosmos;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -49,14 +48,7 @@ namespace DataLayer
         public async void Remove(Person person)
         {
             var id = person.Id;
-            try
-            {
-                var response = await _container.DeleteItemAsync<Person>(id, new PartitionKey(id), new ItemRequestOptions { IfMatchEtag = person.ETag });
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e); //query why this must be done out of test method to work
-            }
+            var response = await _container.DeleteItemAsync<Person>(id, new PartitionKey(id), new ItemRequestOptions { IfMatchEtag = person.ETag });
         }
 
         public async Task<Person> Create(Person person)

@@ -128,13 +128,17 @@ namespace DataLayerTests
             // remove older version of item.
             try
             {
-                data.Remove(newPerson);
+                newPerson.FirstName = "Alice3";
+                var outdatedPerson = await data.Update(newPerson);
+            } catch (Exception e)
+            {
+                // add stuff
             }
             finally
             {
-                // need to run assertion before clean up - refactor to use get method
+                // assert
                 var people = await data.GetAll();
-                Assert.IsTrue(people.Any(p => p.Id == newPerson.Id));
+                Assert.IsTrue(people.Any(p => p.Id == newPerson.Id && p.FirstName == "Alice2"));
 
                 // teardown
                 data.Remove(updatePerson);
