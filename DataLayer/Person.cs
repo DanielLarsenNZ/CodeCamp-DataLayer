@@ -11,17 +11,12 @@ namespace DataLayer
     /// A Person Model
     /// </summary>
     /// <remarks>AKA DTO (data transfer object), POCO (plain old c# object)</remarks>
-    public class Person
+    public class Person : Model
     {
         //TODO: Properties
         public string FirstName { get; set; }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
         public string  LastName { get; set; }
-
-        public string ETag { get; set; }
 
         public double HoursWorked { get; set; }
 

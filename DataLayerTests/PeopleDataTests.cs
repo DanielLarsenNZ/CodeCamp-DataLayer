@@ -19,9 +19,9 @@ namespace DataLayerTests
 
             // Create a CosmosClient
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
-            
+
             // Inject into PeopleData. IRL we would do this with IoC
-            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+            var data = new DataLayer<Person>(client, _config["Cosmos_DatabaseId"], "People");
 
             // act
             var people = await data.GetAll();
@@ -38,7 +38,7 @@ namespace DataLayerTests
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
 
             // Inject into PeopleData. IRL we would do this with IoC
-            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+            var data = new DataLayer<Person>(client, _config["Cosmos_DatabaseId"], "People");
 
             // act
             var people = await data.GetAll();
@@ -57,8 +57,9 @@ namespace DataLayerTests
             var person = new Person { FirstName = "Alice", Id = "A104", LastName = "Bob", HoursWorked = 5.5, Phone = "+642123456" };
 
             // Inject into PeopleData. IRL we would do this with IoC
-            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
-            
+            var data = new DataLayer<Person>(client, _config["Cosmos_DatabaseId"], "People");
+
+
             // act
             var newPerson = await data.Create(person);
             try
@@ -83,7 +84,7 @@ namespace DataLayerTests
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
             var person = new Person { FirstName = "Alice", Id = "A105", LastName = "Bob", HoursWorked = 5.5, Phone = "+642123456" };
 
-            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+            var data = new DataLayer<Person>(client, _config["Cosmos_DatabaseId"], "People");
             var newPerson = await data.Create(person);
 
             //act
@@ -101,7 +102,8 @@ namespace DataLayerTests
         {
             //setup
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
-            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+            var data = new DataLayer<Person>(client, _config["Cosmos_DatabaseId"], "People");
+
 
             // act
             var person = await data.Get("A101");
@@ -119,7 +121,7 @@ namespace DataLayerTests
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
             var person = new Person { FirstName = "Alice", Id = "A104", LastName = "Bob", HoursWorked = 5.5, Phone = "+642123456" };
 
-            var data = new PeopleData(client, _config["Cosmos_DatabaseId"]);
+            var data = new DataLayer<Person>(client, _config["Cosmos_DatabaseId"], "People");
             var newPerson = await data.Create(person);
 
             // act
