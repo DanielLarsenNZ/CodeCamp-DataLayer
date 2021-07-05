@@ -71,7 +71,7 @@ namespace DataLayerTests
             finally
             {
                 // teardown
-                data.Remove(newPerson.Id);
+                await data.Remove(newPerson);
             }
         }
 
@@ -87,7 +87,7 @@ namespace DataLayerTests
             var newPerson = await data.Create(person);
 
             //act
-            data.Remove(newPerson.Id);
+            await data.Remove(newPerson);
             var people = await data.GetAll();
 
             //assert
@@ -97,7 +97,7 @@ namespace DataLayerTests
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task GetPerson()
+        public async Task Get_WithId_ReturnsPersonWithSameId()
         {
             //setup
             var client = new CosmosClient(_config["Cosmos_ConnectionString"]);
@@ -112,6 +112,7 @@ namespace DataLayerTests
 
         [TestMethod]
         [TestCategory("Integration")]
+        [ExpectedException(typeof(CosmosException))]
         public async Task CorrectUpdate()
         {
             // arrange
@@ -130,18 +131,11 @@ namespace DataLayerTests
             {
                 newPerson.FirstName = "Alice3";
                 var outdatedPerson = await data.Update(newPerson);
-            } catch (Exception e)
-            {
-                // add stuff
             }
             finally
             {
-                // assert
-                var people = await data.GetAll();
-                Assert.IsTrue(people.Any(p => p.Id == newPerson.Id && p.FirstName == "Alice2"));
-
                 // teardown
-                data.Remove(updatePerson);
+                await data.Remove(updatePerson);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -38,40 +39,33 @@ namespace DataLayer
             return response.Resource;
         }
 
-        public async void Remove(string id)
-        {
-            // TODO: exception handling
-            // TODO: ETag validation before removal.
-            var response = await _container.DeleteItemAsync<Person>(id, new PartitionKey(id));
-        }
-
-        public async void Remove(Person person)
-        {
-            var id = person.Id;
-            var response = await _container.DeleteItemAsync<Person>(id, new PartitionKey(id), new ItemRequestOptions { IfMatchEtag = person.ETag });
-        }
+        public async Task Remove(Person person) 
+            => await _container.DeleteItemAsync<Person>(
+                person.Id,
+                new PartitionKey(person.Id), 
+                new ItemRequestOptions { IfMatchEtag = person.ETag });
 
         public async Task<Person> Create(Person person)
         {
             var response =  await _container.CreateItemAsync(person);
-            return personWithETag(response);
+            return PersonWithETag(response);
         }
 
         public async Task<Person> Get(string id)
         {
             var response = await _container.ReadItemAsync<Person>(id, new PartitionKey(id));
-            return personWithETag(response);
+            return PersonWithETag(response);
         }
 
         public async Task<Person> Update(Person person)
         {
             var response = await _container.ReplaceItemAsync(person, person.Id, new PartitionKey(person.Id), new ItemRequestOptions { IfMatchEtag = person.ETag });
-            return personWithETag(response);
+            return PersonWithETag(response);
         }
         /// <summary>
         /// Method taking the response object and parsing it into a person object with the ETag property extracted.
         /// </summary>
-        private Person personWithETag(ItemResponse<Person> response)
+        private Person PersonWithETag(ItemResponse<Person> response)
         {
             Person person = response.Resource;
             person.ETag = response.ETag;
