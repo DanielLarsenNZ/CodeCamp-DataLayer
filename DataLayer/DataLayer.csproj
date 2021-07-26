@@ -18,4 +18,18 @@
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.19.0" />
   </ItemGroup>
 
+	<PropertyGroup>
+		<PackageId>CodeCamp.DataLayer</PackageId>
+		<Title>Generic Data Layer for Codecamp</Title>
+		<Description></Description>
+		<Version>1.0.0</Version>
+		<Authors>Noah Costar and contributors</Authors>
+		<Company>Code Camp</Company>
+		<Copyright>Copyright 2021 Noah Costar and contributors</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/DanielLarsenNZ/CodeCamp.DataLayer</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/DanielLarsenNZ/CodeCamp.DataLayer</RepositoryUrl>
+		<PackageTags>csharp;cosmos;azure;data</PackageTags>
+	</PropertyGroup>
+
 </Project>
