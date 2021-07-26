@@ -48,13 +48,13 @@ namespace DataLayer
         public async Task<T> Create(T item)
         {
             var response = await _container.CreateItemAsync(item);
-            return ItemWithETag(response);
+            return response.Resource;
         }
 
         public async Task<T> Get(string id)
         {
             var response = await _container.ReadItemAsync<T>(id, new PartitionKey(id));
-            return ItemWithETag(response);
+            return response.Resource;
         }
 
         public async Task<T> Update(T item)
@@ -63,16 +63,7 @@ namespace DataLayer
                 item.Id,
                 new PartitionKey(item.Id),
                 new ItemRequestOptions { IfMatchEtag = item.ETag });
-            return ItemWithETag(response);
-        }
-        /// <summary>
-        /// Method taking the response object and parsing it into a item with the ETag property extracted.
-        /// </summary>
-        private T ItemWithETag(ItemResponse<T> response)
-        {
-            T item = response.Resource;
-            item.ETag = response.ETag;
-            return item;
+            return response.Resource;
         }
 
     }

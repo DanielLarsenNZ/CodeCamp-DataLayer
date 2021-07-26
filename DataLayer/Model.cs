@@ -12,6 +12,7 @@ namespace DataLayer
         [JsonProperty("id")]
         public string Id { get; set; }
 
+        [JsonProperty("_eTag")]
         public string ETag { get; set; }
     }
 }
